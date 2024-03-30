@@ -3,6 +3,7 @@ const instructionsText = document.getElementById('instructions-text');
 const logo = document.getElementById('logo');
 const score = document.getElementById('score')
 const highScoreText = document.getElementById('high-score')
+const snakeHead = document.getElementsByClassName('snake');
 
 const gridSize = 20;
 let snake = [{ x: 10, y: 10 }]
@@ -15,17 +16,30 @@ let gameStarted = false;
 
 function draw() {
     board.innerHTML = '';
+
     drawSnake();
     drawFood();
     updateScore();
+    setSnakeHeadClass(direction);
+    setSnakeTailClass(direction);
 }
 
 function drawSnake() {
-    snake.forEach((segment) => {
-        const snakeElement = createGameElement('div', 'snake');
-        setPosition(snakeElement, segment);
-        board.appendChild(snakeElement)
-    });
+    if(gameStarted) {
+        snake.forEach((segment, index) => {
+            const snakeElement = createGameElement('div', 'snake');
+            setPosition(snakeElement, segment);
+
+            if (index === 0) {
+                snakeElement.classList.remove('snake-top');
+                snakeElement.classList.remove('snake-bottom');
+                snakeElement.classList.remove('snake-left');
+                snakeElement.classList.remove('snake-right');
+            }
+
+            board.appendChild(snakeElement)
+        });
+    }
 }
 
 function createGameElement(tag, className) {
@@ -74,12 +88,17 @@ function move() {
             break;
     }
 
+    setSnakeHeadClass(direction);
+    setSnakeTailClass(direction);
+
     snake.unshift(head);
 
     if (head.x === food.x && head.y === food.y) {
         food = generateFood();
+
         increaseSpeed();
         clearInterval(gameInterval);
+
         gameInterval = setInterval(() => {
             move();
             checkCollision();
@@ -87,6 +106,76 @@ function move() {
         }, gameSpeedDelay);
     } else {
         snake.pop();
+    }
+}
+
+function setSnakeHeadClass(direction) {
+    const head = snakeHead[0];
+
+    if (head) {
+        switch (direction) {
+            case 'right':
+                head.classList.remove('snake-top');
+                head.classList.remove('snake-bottom');
+                head.classList.remove('snake-left');
+                head.classList.add('snake-right');
+                break;
+            case 'left':
+                head.classList.remove('snake-top');
+                head.classList.remove('snake-bottom');
+                head.classList.remove('snake-right');
+                head.classList.add('snake-left');
+                break;
+            case 'up':
+                head.classList.remove('snake-right');
+                head.classList.remove('snake-left');
+                head.classList.remove('snake-bottom');
+                head.classList.add('snake-top');
+                break;
+            case 'down':
+                head.classList.remove('snake-right');
+                head.classList.remove('snake-left');
+                head.classList.remove('snake-top');
+                head.classList.add('snake-bottom');
+                break;
+        }
+    }
+}
+
+function setSnakeTailClass(direction) {
+    let tail = snakeHead[snakeHead.length - 1];
+
+    if (tail === -1) {
+        tail = snakeHead[0]
+    }
+
+    if (tail) {
+        switch (direction) {
+            case 'right':
+                tail.classList.remove('snake-tail-top');
+                tail.classList.remove('snake-tail-bottom');
+                tail.classList.remove('snake-tail-left');
+                tail.classList.add('snake-tail-right');
+                break;
+            case 'left':
+                tail.classList.remove('snake-tail-top');
+                tail.classList.remove('snake-tail-bottom');
+                tail.classList.remove('snake-tail-right');
+                tail.classList.add('snake-tail-left');
+                break;
+            case 'up':
+                tail.classList.remove('snake-tail-right');
+                tail.classList.remove('snake-tail-left');
+                tail.classList.remove('snake-tail-bottom');
+                tail.classList.add('snake-tail-top');
+                break;
+            case 'down':
+                tail.classList.remove('snake-tail-right');
+                tail.classList.remove('snake-tail-left');
+                tail.classList.remove('snake-tail-top');
+                tail.classList.add('snake-tail-bottom');
+                break;
+        }
     }
 }
 
