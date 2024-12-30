@@ -57,11 +57,20 @@ body {
     color: #6481ae;
 }
 
+#game-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
 #game-board {
     display: grid;
-    grid-template-columns: repeat(20, 20px);
-    grid-template-rows: repeat(20, 20px);
-    border-style: none;
+    grid-template-columns: repeat(40, 20px);
+    grid-template-rows: repeat(40, 20px);
+    border-radius: 1rem;
+    border: 1px solid #9ba5ba;
+    width: 100%;
 }
 
 #instructions-text {
@@ -69,7 +78,11 @@ body {
     text-align: center;
     text-transform: capitalize;
     font-size: 2rem;
-    margin-top: 1rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin-top: 120px;
 }
 
 .snake {

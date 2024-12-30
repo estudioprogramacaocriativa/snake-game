@@ -5,7 +5,7 @@ const score = document.getElementById('score')
 const highScoreText = document.getElementById('high-score')
 const snakeHead = document.getElementsByClassName('snake');
 
-const gridSize = 20;
+const gridSize = 40;
 let snake = [{ x: 10, y: 10 }]
 let food = generateFood();
 let highScore = localStorage.getItem('high-score') ?? 0;
@@ -49,7 +49,6 @@ function createGameElement(tag, className) {
     return element;
 }
 
-// Set the position of the snake or the food
 function setPosition(element, position) {
     element.style.gridColumn = position.x;
     element.style.gridRow = position.y;
